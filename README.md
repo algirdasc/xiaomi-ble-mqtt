@@ -41,3 +41,7 @@ MQTT Payload example:
 
     {"temperature": 25.7, "humidity": 42.0, "battery": 100}
 
+# To Do
+
+ - MQTT authentication
+
