@@ -43,6 +43,5 @@ MQTT Payload example:
 
 # To Do
 
- - MQTT authentication
  - Median calculation to prevent graph spikes
 
