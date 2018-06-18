@@ -17,11 +17,18 @@ devices = config.sections()
 # Init MQTT
 mqtt_config = configparser.ConfigParser()
 mqtt_config.read("{0}/mqtt.ini".format(workdir))
-mqtt_broker = mqtt_config["broker"]
+mqtt_broker_cfg = mqtt_config["broker"]
 
 try:
-    mqtt_client = mqtt.Client("RPI2")
-    mqtt_client.connect(host=mqtt_broker.get("host"), port=mqtt_broker.getint("port"))
+    mqtt_client = mqtt.Client(mqtt_broker_cfg.get("client"))
+
+    mqtt_username = mqtt_broker_cfg.get("username")
+    mqtt_password = mqtt_broker_cfg.get("password")
+
+    if mqtt_username:
+        mqtt_client.username_pw_set(mqtt_username, mqtt_password)
+
+    mqtt_client.connect(host=mqtt_broker_cfg.get("host"), port=mqtt_broker_cfg.getint("port"))
 except Exception as ex:
     print("Cannot connect to MQTT: {0}".format(str(ex)))
     exit(1)
