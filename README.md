@@ -30,6 +30,7 @@ Look for line which looks like this:
     [room1]
     device_mac=4C:65:A8:XX:XX:XX
     topic=sensors/room1
+    average=3
     
     [room2]
     device_mac=4C:65:A8:XX:XX:XX
@@ -41,7 +42,4 @@ MQTT Payload example:
 
     {"temperature": 25.7, "humidity": 42.0, "battery": 100}
 
-# To Do
-
- - Median calculation to prevent graph spikes
 

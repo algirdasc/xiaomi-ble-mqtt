@@ -33,16 +33,66 @@ except Exception as ex:
     print("Cannot connect to MQTT: {0}".format(str(ex)))
     exit(1)
 
+# Averages
+averages = configparser.ConfigParser()
+averages.read('{0}/averages.ini'.format(workdir))
+
 for device in devices:
+
     mac = config[device].get("device_mac")
     poller = MiTempBtPoller(mac, BluepyBackend)
+
     try:
+
         temperature = poller.parameter_value(MI_TEMPERATURE)
         humidity = poller.parameter_value(MI_HUMIDITY)
         battery = poller.parameter_value(MI_BATTERY)
-        json = json.dumps({"temperature": temperature, "humidity": humidity, "battery": battery})
-        print(datetime.datetime.now(), device, " : ", json)
-        mqtt_client.publish(config[device].get("topic"), json, retain=True)
+
+        data = json.dumps({"temperature": temperature, "humidity": humidity, "battery": battery})
+
+        # Check averages
+        average_count = config[device].getint("average")
+        if average_count:
+            if mac in averages.sections():
+               avg = json.loads(averages[mac]['avg'])
+            else:
+               avg = []
+
+            # Add average
+            avg.insert(0, data)
+
+            # Strip data
+            avg = avg[0:average_count]
+
+            # Calc averages
+            temperature = 0
+            humidity = 0
+            battery = 0
+
+            for a in avg:
+                al = json.loads(a)
+                temperature += al['temperature']
+                humidity += al['humidity']
+                battery += al['battery']
+
+            temperature = round(temperature / len(avg), 1)
+            humidity = round(humidity / len(avg), 1)
+            battery = round(battery / len(avg), 1)
+
+            # Convert averages
+            averages[mac] = {}
+            averages[mac]['avg'] = json.dumps(avg)
+
+            # Rewrite data
+            data = json.dumps({"temperature": temperature, "humidity": humidity, "battery": battery, "average": len(avg)})
+
+        print(datetime.datetime.now(), device, " : ", data)
+
+        mqtt_client.publish(config[device].get("topic"), data, retain=True)
     except Exception as e:
+        raise
         print("Error polling device {0}:".format(device))
         print(str(e))
+
+with open('averages.ini', 'w') as averages_file:
+    averages.write(averages_file)
