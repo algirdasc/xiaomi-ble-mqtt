@@ -90,9 +90,8 @@ for device in devices:
 
         mqtt_client.publish(config[device].get("topic"), data, retain=True)
     except Exception as e:
-        raise
         print("Error polling device {0}:".format(device))
         print(str(e))
 
-with open('averages.ini', 'w') as averages_file:
+with open('{0}/averages.ini'.format(workdir), 'w') as averages_file:
     averages.write(averages_file)
