@@ -30,6 +30,7 @@ Look for line which looks like this:
     [room1]
     device_mac=4C:65:A8:XX:XX:XX
     topic=sensors/room1
+    availability_topic=sensors/room1/availability
     average=3
     
     [room2]
