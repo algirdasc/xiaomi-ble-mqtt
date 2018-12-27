@@ -3,6 +3,7 @@ from mitemp_bt.mitemp_bt_poller import MiTempBtPoller
 from mitemp_bt.mitemp_bt_poller import MI_TEMPERATURE, MI_HUMIDITY, MI_BATTERY
 from btlewrap.bluepy import BluepyBackend
 import paho.mqtt.client as mqtt
+import traceback
 import configparser
 import os
 import json
@@ -35,7 +36,7 @@ except Exception as ex:
 
 # Averages
 averages = configparser.ConfigParser()
-averages.read('{0}/averages.ini'.format(workdir))
+averages.read("{0}/averages.ini".format(workdir))
 
 for device in devices:
 
@@ -48,15 +49,18 @@ for device in devices:
         humidity = poller.parameter_value(MI_HUMIDITY)
         battery = poller.parameter_value(MI_BATTERY)
 
-        data = json.dumps({"temperature": temperature, "humidity": humidity, "battery": battery})
+        data = json.dumps({
+            "temperature": temperature,
+            "humidity": humidity,
+            "battery": battery
+        })
 
         # Check averages
+        avg = []
         average_count = config[device].getint("average")
         if average_count:
             if mac in averages.sections():
-               avg = json.loads(averages[mac]['avg'])
-            else:
-               avg = []
+                avg = json.loads(averages[mac]["avg"])
 
             # Add average
             avg.insert(0, data)
@@ -71,9 +75,9 @@ for device in devices:
 
             for a in avg:
                 al = json.loads(a)
-                temperature += al['temperature']
-                humidity += al['humidity']
-                battery += al['battery']
+                temperature += al["temperature"]
+                humidity += al["humidity"]
+                battery += al["battery"]
 
             temperature = round(temperature / len(avg), 1)
             humidity = round(humidity / len(avg), 1)
@@ -81,17 +85,27 @@ for device in devices:
 
             # Convert averages
             averages[mac] = {}
-            averages[mac]['avg'] = json.dumps(avg)
+            averages[mac]["avg"] = json.dumps(avg)
 
             # Rewrite data
-            data = json.dumps({"temperature": temperature, "humidity": humidity, "battery": battery, "average": len(avg)})
+            data = json.dumps({
+                "temperature": temperature,
+                "humidity": humidity,
+                "battery": battery,
+                "average": len(avg)
+            })
 
         print(datetime.datetime.now(), device, " : ", data)
 
-        mqtt_client.publish(config[device].get("topic"), data, retain=True)
+        mqtt_client.publish(config[device].get("topic"), data)
+        mqtt_client.publish(config[device].get("availability_topic"), "online")
+    except bluepy.btle.BTLEException:
+        mqtt_client.publish(config[device].get("availability_topic"), "offline")
     except Exception as e:
         print("Error polling device {0}:".format(device))
-        print(str(e))
+        print(traceback.print_exc())
 
-with open('{0}/averages.ini'.format(workdir), 'w') as averages_file:
+with open("{0}/averages.ini".format(workdir), "w") as averages_file:
     averages.write(averages_file)
+
+mqtt_client.disconnect()
