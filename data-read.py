@@ -2,6 +2,7 @@
 from mitemp_bt.mitemp_bt_poller import MiTempBtPoller
 from mitemp_bt.mitemp_bt_poller import MI_TEMPERATURE, MI_HUMIDITY, MI_BATTERY
 from btlewrap.bluepy import BluepyBackend
+from bluepy.btle import BTLEException
 import paho.mqtt.client as mqtt
 import traceback
 import configparser
@@ -99,8 +100,9 @@ for device in devices:
 
         mqtt_client.publish(config[device].get("topic"), data)
         mqtt_client.publish(config[device].get("availability_topic"), "online")
-    except bluepy.btle.BTLEException:
+    except BTLEException:
         mqtt_client.publish(config[device].get("availability_topic"), "offline")
+        print("Error connecting to device {0}: {1}".format(device, str(e)))
     except Exception as e:
         print("Error polling device {0}:".format(device))
         print(traceback.print_exc())
