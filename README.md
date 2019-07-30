@@ -19,7 +19,7 @@ This is simple python script, which scans Xiaomi BLE Temperature and Humidity se
 	# Add row
 	*/5 * * * * /usr/bin/python3.5 <path to xiaomi-ble-mqtt>/data-read.py >> <path to xiaomi-ble-mqtt>/xiaomi-ble.log 2>&1
 
-4.Configure MQTT broker by editing `mqtt.ini` file.
+4.Rename `mqtt.ini.sample` to `mqtt.ini` and configure MQTT broker by editing `mqtt.ini` file.
 
 5.Scan for available Xiaomi BLE devices:
 
@@ -29,7 +29,7 @@ Look for line which looks like this:
 
     4C:65:A8:D4:A3:1D MJ_HT_V1
 
-5.Configure Xiaomi devices by editing devices.ini file:
+5.Rename `devices.ini.sample` to `devices.ini` and configure Xiaomi devices by editing `devices.ini` file:
 
     [room1]
     device_mac=4C:65:A8:XX:XX:XX
