@@ -1,0 +1,13 @@
+[bedroom]
+device_mac = 
+topic = sensors/bedroom
+availability_topic = sensors/bedroom/availability
+average = 3
+timeout = 5
+
+[kidsroom]
+device_mac = 
+topic = sensors/kidsroom
+availability_topic = sensors/kidsroom/availability
+average = 5
+timeout = 5
