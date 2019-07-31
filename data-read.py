@@ -105,8 +105,8 @@ for device in devices:
         print("Error connecting to device {0}: {1}".format(device, str(e)))
     except Exception as e:
         mqtt_client.publish(config[device].get("availability_topic"), "offline")
-        print("Error polling device {0}:".format(device))
-        print(traceback.print_exc())
+        print("Error polling device {0}. Device might be unreachable or offline.".format(device))
+        # print(traceback.print_exc())
 
 with open("{0}/averages.ini".format(workdir), "w") as averages_file:
     averages.write(averages_file)
