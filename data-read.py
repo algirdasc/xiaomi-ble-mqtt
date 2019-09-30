@@ -1,6 +1,6 @@
 #!/usr/bin/python3.5
 from mitemp.mitemp_bt.mitemp_bt_poller import MiTempBtPoller
-from mitemp_bt.mitemp_bt_poller import MI_TEMPERATURE, MI_HUMIDITY, MI_BATTERY
+from mitemp.mitemp_bt.mitemp_bt_poller import MI_TEMPERATURE, MI_HUMIDITY, MI_BATTERY
 from btlewrap.bluepy import BluepyBackend
 from bluepy.btle import BTLEException
 import paho.mqtt.client as mqtt
