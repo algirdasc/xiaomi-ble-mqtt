@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3
 from mitemp.mitemp_bt.mitemp_bt_poller import MiTempBtPoller
 from mitemp.mitemp_bt.mitemp_bt_poller import MI_TEMPERATURE, MI_HUMIDITY, MI_BATTERY
 from btlewrap.bluepy import BluepyBackend
