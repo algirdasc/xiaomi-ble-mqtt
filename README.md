@@ -7,7 +7,6 @@ This is simple python script, which scans Xiaomi BLE Temperature and Humidity se
     
     sudo pip3 install bluepy
     sudo pip3 install paho-mqtt
-    sudo pip3 install mitemp_bt
 
 2.Clone code:
 
@@ -18,7 +17,7 @@ This is simple python script, which scans Xiaomi BLE Temperature and Humidity se
 
     crontab -e
 	# Add row
-	*/5 * * * * /usr/bin/python3.5 <path to xiaomi-ble-mqtt>/data-read.py >> <path to xiaomi-ble-mqtt>/xiaomi-ble.log 2>&1
+	*/5 * * * * /usr/bin/python3 <path to xiaomi-ble-mqtt>/data-read.py >> <path to xiaomi-ble-mqtt>/xiaomi-ble.log 2>&1
 
 4.Rename `mqtt.ini.sample` to `mqtt.ini` and configure MQTT broker by editing `mqtt.ini` file.
 
