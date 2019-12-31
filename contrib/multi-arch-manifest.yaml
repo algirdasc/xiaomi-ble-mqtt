@@ -1,0 +1,11 @@
+image: eminguez/xiaomi-ble-mqtt:latest
+manifests:
+  - image: eminguez/xiaomi-ble-mqtt:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: eminguez/xiaomi-ble-mqtt:armv7
+    platform:
+      architecture: arm
+      os: linux
+      variant: v7
