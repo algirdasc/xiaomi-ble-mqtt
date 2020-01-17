@@ -9,3 +9,7 @@ manifests:
       architecture: arm
       os: linux
       variant: v7
+  - image: eminguez/xiaomi-ble-mqtt:arm64
+    platform:
+      architecture: arm64
+      os: linux

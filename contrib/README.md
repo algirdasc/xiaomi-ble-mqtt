@@ -34,6 +34,9 @@ docker build -t docker.io/myuser/xiaomi-ble-mqtt:amd64 -f contrib/Dockerfile .
 
 # In a armv7 linux host (raspberry pi):
 docker build -t docker.io/myuser/xiaomi-ble-mqtt:armv7 -f contrib/Dockerfile .
+
+# In a arm64 linux host (pine64):
+docker build -t docker.io/myuser/xiaomi-ble-mqtt:arm64 -f contrib/Dockerfile .
 ```
 
 * Create an account in dockerhub and login:
@@ -50,15 +53,18 @@ docker push docker.io/myuser/xiaomi-ble-mqtt:amd64
 
 # In the armv7 linux host (raspberry pi):
 docker push docker.io/myuser/xiaomi-ble-mqtt:armv7
+
+# In the arm64 linux host (pine64):
+docker push docker.io/myuser/xiaomi-ble-mqtt:arm64
 ```
 
-* Upload the multiarch manifest:
+* Upload the multiarch manifest (modify it to use your user first):
 
 ```shell
 manifest-tool --username youruser --password yourpassword push from-spec contrib/multi-arch-manifest.yaml
 ```
 
-Then, from an amd64 or armv7 host:
+Then, from an amd64/armv7/arm64 host:
 
 ```shell
 docker pull docker.io/myuser/xiaomi-ble-mqtt:latest
