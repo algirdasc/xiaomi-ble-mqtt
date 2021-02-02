@@ -10,6 +10,11 @@ This is simple python script, which scans Xiaomi BLE Temperature and Humidity se
     
     sudo pip3 install bluepy
     sudo pip3 install paho-mqtt
+    
+1.1.If you're using Ubuntu 20.04 on Raspberry Pi:
+
+    sudo apt-get install libglib2.0-dev pi-bluetooth 
+    sudo pip3 install btlewrap
 
 2.Clone code:
 
